@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">RecipeApp</string>
+    <string name="title_home">Mis Recetas</string>
+    <string name="action_add">Crear Receta</string>
+    <string name="label_ingredients">Ingredientes</string>
+    <string name="label_steps">Preparación</string>
+    <string name="share_recipe">Compartir Receta</string>
+</resources>
