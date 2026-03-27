@@ -33,6 +33,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -176,15 +180,14 @@ fun EditRecipeScreen(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
+                            var amountText by remember {
+                                mutableStateOf(if (ingredient.amount == 0.0) "" else ingredient.amount.toString().removeSuffix(".0"))
+                            }
                             OutlinedTextField(
-                                value = if (ingredient.amount == 0.0) "" else ingredient.amount.toString(),
-                                onValueChange = {
-                                    viewModel.onEvent(
-                                        EditRecipeEvent.ChangeIngredientAmount(
-                                            index,
-                                            it
-                                        )
-                                    )
+                                value = amountText,
+                                onValueChange = { newValue ->
+                                    amountText = newValue // Mantiene tu texto exacto (con puntos o comas) en la pantalla
+                                    viewModel.onEvent(EditRecipeEvent.ChangeIngredientAmount(index, newValue)) // Actualiza el dato real
                                 },
                                 label = { Text("Cantidad") },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
