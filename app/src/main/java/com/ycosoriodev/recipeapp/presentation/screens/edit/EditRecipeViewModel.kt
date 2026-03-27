@@ -107,7 +107,7 @@ class EditRecipeViewModel @Inject constructor(
                 _ingredients[event.index] = _ingredients[event.index].copy(name = event.value)
             }
             is EditRecipeEvent.ChangeIngredientAmount -> {
-                _ingredients[event.index] = _ingredients[event.index].copy(amount = event.value.toDoubleOrNull() ?: 0.0)
+                _ingredients[event.index] = _ingredients[event.index].copy(amount = event.value.replace(",", ".").toDoubleOrNull() ?: 0.0)
             }
             is EditRecipeEvent.ChangeIngredientUnit -> {
                  _ingredients[event.index] = _ingredients[event.index].copy(unit = event.value)

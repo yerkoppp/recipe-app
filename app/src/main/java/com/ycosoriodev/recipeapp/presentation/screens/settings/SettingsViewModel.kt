@@ -65,4 +65,22 @@ class SettingsViewModel @Inject constructor(
             }
         }
     }
+
+    fun exportDataForSharing(onFileReady: (File) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val recipes = repository.getRecipes().first()
+                val recipesJson = json.encodeToString(recipes.map { it.toEntity() })
+
+                // Guarda temporalmente en caché
+                val file = File(context.cacheDir, "recetas_backup.json")
+                file.writeText(recipesJson)
+
+                onFileReady(file)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                android.widget.Toast.makeText(context, "Error al exportar: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+            }
+        }
+    }
 }

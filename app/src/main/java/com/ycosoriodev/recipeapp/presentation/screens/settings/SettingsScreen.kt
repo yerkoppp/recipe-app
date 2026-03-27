@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -58,14 +59,26 @@ fun SettingsScreen(
              verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text("Gestión de Datos", style = MaterialTheme.typography.titleMedium)
-            
+
             Button(
                 onClick = {
-                    exportLauncher.launch("recetas_backup.json")
+                    viewModel.exportDataForSharing { file ->
+                        val uri = FileProvider.getUriForFile(
+                            context,
+                            "${context.packageName}.provider", // Usa el authority definido en tu AndroidManifest
+                            file
+                        )
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "application/json"
+                            putExtra(Intent.EXTRA_STREAM, uri)
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
+                        context.startActivity(Intent.createChooser(shareIntent, "Compartir recetas"))
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Exportar Recetas (JSON)")
+                Text("Compartir Exportación (JSON)")
             }
 
             Button(
@@ -76,9 +89,9 @@ fun SettingsScreen(
             ) {
                 Text("Importar Recetas (JSON)")
             }
-            
-            Divider()
-            
+
+            HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+
             Text("Accesibilidad", style = MaterialTheme.typography.titleMedium)
             Text("Estas opciones están controladas por la configuración del sistema.", style = MaterialTheme.typography.bodyMedium)
             

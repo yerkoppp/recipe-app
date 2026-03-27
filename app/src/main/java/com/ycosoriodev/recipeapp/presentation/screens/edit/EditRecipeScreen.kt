@@ -187,7 +187,7 @@ fun EditRecipeScreen(
                                     )
                                 },
                                 label = { Text("Cantidad") },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                                 modifier = Modifier.weight(1f)
                             )
                             Spacer(modifier = Modifier.width(8.dp))

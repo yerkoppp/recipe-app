@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
 data class IngredientDto(val name: String, val amount: Double, val unit: String)
 
 fun Ingredient.toDto() = IngredientDto(name, amount, unit)
+
 fun IngredientDto.toDomain() = Ingredient(name, amount, unit)
 
 class Converters {
